@@ -1,0 +1,106 @@
+{
+  "id": "mails",
+  "version": "0.1.0",
+  "api": 1,
+  "squadron": ">=0.56.0",
+  "name": {
+    "en": "Mails",
+    "fr": "Mails"
+  },
+  "description": {
+    "en": "The mails your local site sends, caught by the project's Mailpit, in a panel next to your agents. Agents can search and read them to check an order or password-reset email while they test.",
+    "fr": "Les mails que votre site local envoie, attrapés par le Mailpit du projet, dans un panneau à côté de vos agents. Les agents peuvent les chercher et les lire pour vérifier un mail de commande ou de mot de passe pendant leurs tests."
+  },
+  "logo": "logo.svg",
+  "wasm": "target/wasm32-wasip2/release/mails.wasm",
+  "permissions": {
+    "exec": [
+      "curl",
+      "lando"
+    ]
+  },
+  "contributes": {
+    "items": [
+      {
+        "slot": "agent.tools",
+        "id": "mails",
+        "label": {
+          "en": "Mails",
+          "fr": "Mails"
+        },
+        "hint": {
+          "en": "The mails caught by this project's Mailpit",
+          "fr": "Les mails attrapés par le Mailpit de ce projet"
+        },
+        "icon": "logo",
+        "words": [
+          "mailpit",
+          "mailhog",
+          "mail",
+          "email",
+          "smtp"
+        ],
+        "action": {
+          "panel.open": "main"
+        }
+      }
+    ],
+    "panels": [
+      {
+        "id": "main",
+        "title": {
+          "en": "Mails",
+          "fr": "Mails"
+        },
+        "page": "panel/index.html"
+      }
+    ],
+    "tools": [
+      {
+        "name": "list",
+        "description": "Lists the newest mails caught by this project's local Mailpit (id, date, from, to, subject), optionally filtered with a Mailpit search such as `to:client@example.test subject:order`.",
+        "input": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "A Mailpit search, such as `to:client@example.test`, `subject:\"Votre commande\"` or `is:unread`. Leave it out for the newest mails."
+            }
+          }
+        }
+      },
+      {
+        "name": "read",
+        "description": "Reads one mail caught by this project's Mailpit: headers, text body and the links it holds, to follow a confirmation or reset link while testing.",
+        "input": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "The mail's id, as mails_list gives it."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "settings": {
+      "options": [
+        {
+          "id": "url",
+          "label": {
+            "en": "Mailpit address",
+            "fr": "Adresse de Mailpit"
+          },
+          "hint": {
+            "en": "Empty: the Mailpit or MailHog service of the project's Lando app, else http://localhost:8025.",
+            "fr": "Vide : le service Mailpit ou MailHog de l’app Lando du projet, sinon http://localhost:8025."
+          },
+          "kind": "text"
+        }
+      ]
+    }
+  }
+}
